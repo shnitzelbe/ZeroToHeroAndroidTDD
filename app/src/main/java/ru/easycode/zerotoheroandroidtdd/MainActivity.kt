@@ -2,6 +2,7 @@ package ru.easycode.zerotoheroandroidtdd
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_TITLE_TEXT = "TITLE"
+        const val KEY_TITLE_VISIBLE = "TITLE_VISIBLE"
     }
     private lateinit var binding: ActivityMainBinding
 
@@ -20,19 +22,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         //val textView: TextView = findViewById(R.id.titleTextView)
         //val button: Button = findViewById(R.id.changeButton)
-        binding.changeButton.setOnClickListener {
-            binding.titleTextView.text = "I am an Android Developer!"
+        binding.hideButton.setOnClickListener {
+            binding.titleTextView.visibility = View.GONE
         }
 
         savedInstanceState?.let {
-            it.getString(KEY_TITLE_TEXT, null)?.let { title ->
-                binding.titleTextView.text = title
+            it.getBoolean(KEY_TITLE_VISIBLE, true)?.let { visible ->
+                binding.titleTextView.visibility = if(visible) View.VISIBLE else View.GONE
             }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY_TITLE_TEXT, binding.titleTextView.text.toString())
+        outState.putBoolean(KEY_TITLE_VISIBLE, binding.titleTextView.visibility == View.VISIBLE)
     }
 }
